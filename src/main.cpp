@@ -46,8 +46,11 @@ class $modify(BufferedGameLayer, GJBaseGameLayer) {
 		GJBaseGameLayer::handleButton(false, button, isPlayer1);
 	}
 
-	void processCommands(float dt) {
-		GJBaseGameLayer::processCommands(dt);
+	void processCommands(float dt, bool isHalfTick, bool isLastTick) {
+		GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
+
+		// count each full physics step once
+		if (isHalfTick) return;
 
 		auto f = m_fields.self();
 		f->step++;
