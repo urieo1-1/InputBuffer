@@ -1,37 +1,36 @@
-name: Build Binaries
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - "**"
-
-jobs:
-  build:
-    name: Windows
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build the mod
-        uses: geode-sdk/build-geode-mod@main
-        with:
-          sdk: v5.11.2
-          bindings: geode-sdk/bindings
-          bindings-ref: v5.11.2
-          combine: true
-
-  package:
-    name: Package builds
-    runs-on: ubuntu-latest
-    needs: ["build"]
-
-    steps:
-      - uses: geode-sdk/build-geode-mod/combine@main
-        id: build
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Build Output
-          path: ${{ steps.build.outputs.build-output }}
+{
+    "geode": "5.11.2",
+    "gd": {
+        "win": "2.2081",
+        "android": "2.2081",
+        "mac": "2.2081",
+        "ios": "2.2081"
+    },
+    "id": "uri.inputbuffer_v1",
+    "name": "InputBuffer",
+    "version": "v1.0.0",
+    "developer": "uri",
+    "description": "Buffers your jump input for a configurable number of physics frames.",
+    "dependencies": {
+        "geode.node-ids": ">=v1.23.3"
+    },
+    "settings": {
+        "enabled": {
+            "type": "bool",
+            "name": "Enabled",
+            "default": true
+        },
+        "buffer-frames": {
+            "type": "int",
+            "name": "Buffer Frames",
+            "description": "How many physics steps a jump release is held back (240 steps = 1 second at default TPS).",
+            "default": 3,
+            "min": 0,
+            "max": 30,
+            "control": {
+                "slider": true,
+                "input": true
+            }
+        }
+    }
+}
